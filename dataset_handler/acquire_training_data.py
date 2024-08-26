@@ -304,12 +304,36 @@ def prepare_dataset_for_graph(input_path: str, output_path: str):
         json.dump(graph_formatted_data, output_file, indent=4)
 
 
+def prepare_dataset_for_product_aspects(input_path: str, output_path: str):
+    # Load the dataset
+    df = pd.read_csv(input_path)
+
+    product_review_counts = df.groupby('parent_asin').filter(lambda x: len(x) >= 20)
+
+    product_review_counts = product_review_counts.sample(frac=1, random_state=42)
+
+    selected_reviews = []
+    total_reviews = 0
+    for product_id, product_reviews in product_review_counts.groupby('parent_asin'):
+        selected_reviews.extend(product_reviews.to_dict(orient='records'))
+        total_reviews += len(product_reviews)
+        if total_reviews >= 200:
+            break
+
+    with open(output_path, 'w') as f:
+        json.dump(selected_reviews, f, indent=4)
+
+
 def prepare_data():
     prepare_dataset_for_qa('dataset/qa_dataset_annotated.json', 'dataset/qa_dataset_formatted.json')
     prepare_dataset_for_graph('dataset/qa_dataset_annotated.json', 'dataset/graph_dataset_formatted.json')
+    prepare_dataset_for_product_aspects('dataset/combined_dataset.json',
+                                        'dataset/product_aspects_dataset_formatted.json')
+
 
 # prepare_dataset_for_qa('dataset/qa_dataset_annotated.json', 'dataset/qa_dataset_formatted.json')
 # prepare_dataset_for_graph('dataset/qa_dataset_annotated.json', 'dataset/graph_dataset_formatted.json')
 # extract_subsets(250, 20)
 # combine_subsets()
 # sample_for_qa(200)
+prepare_dataset_for_product_aspects('dataset/combined_dataset.csv', 'dataset/product_aspects_dataset_formatted.json')
