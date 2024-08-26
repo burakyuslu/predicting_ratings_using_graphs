@@ -1,0 +1,2 @@
+Input json files should be in this directory.
+Expected input files: One json file for construction of the graph, and one json file that contains the reviews whose ratings are to be predicted.

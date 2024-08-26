@@ -1,0 +1,4 @@
+Outputted files should be here.
+Expected outputs: The argumentation graph in the .gpickle format, a visualization of the argumentation graph in the .html format,
+clusters.txt that shows the clusters, results.txt that shows the metrics and prediction results,
+results_three_class.txt that shows the results for the reduced 3 class problem
