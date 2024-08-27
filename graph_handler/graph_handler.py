@@ -79,8 +79,14 @@ class GraphHandler:
         negative_labels = self.cluster_embeddings(negative_embeddings, clusters_negative)
 
         # convert NumPy arrays to lists
-        positive_labels = positive_labels.tolist()
-        negative_labels = negative_labels.tolist()
+        if isinstance(positive_labels, np.ndarray):
+            positive_labels = positive_labels.tolist()
+            
+        if isinstance(negative_labels, np.ndarray):
+            negative_labels = negative_labels.tolist()
+        
+        #positive_labels = positive_labels.tolist()
+        #negative_labels = negative_labels.tolist()
 
         # combine results with offsetting negative labels by positive cluster count
         labels = []
