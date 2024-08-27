@@ -58,9 +58,10 @@ class GraphHandler:
             embeddings = np.array(embeddings)
             if embeddings.ndim == 1:
                 embeddings = embeddings.reshape(1, -1)
+            n_clusters = min(len(embeddings), n_clusters)
             kmeans = KMeans(n_clusters=n_clusters, random_state=42)
             return kmeans.fit_predict(embeddings)
-        return np.array([])
+        return np.empty((0,))
 
 
     def perform_sentiment_aware_clustering(self, embeddings, rkp_labels, sentiments, total_clusters):
@@ -81,12 +82,9 @@ class GraphHandler:
         # convert NumPy arrays to lists
         if isinstance(positive_labels, np.ndarray):
             positive_labels = positive_labels.tolist()
-            
+
         if isinstance(negative_labels, np.ndarray):
             negative_labels = negative_labels.tolist()
-        
-        #positive_labels = positive_labels.tolist()
-        #negative_labels = negative_labels.tolist()
 
         # combine results with offsetting negative labels by positive cluster count
         labels = []
