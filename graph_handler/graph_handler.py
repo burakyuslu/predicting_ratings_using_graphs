@@ -60,7 +60,7 @@ class GraphHandler:
                 embeddings = embeddings.reshape(1, -1)
             kmeans = KMeans(n_clusters=n_clusters, random_state=42)
             return kmeans.fit_predict(embeddings)
-        return []
+        return np.array([])
 
 
     def perform_sentiment_aware_clustering(self, embeddings, rkp_labels, sentiments, total_clusters):
