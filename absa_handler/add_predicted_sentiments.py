@@ -4,10 +4,11 @@ from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 import pandas as pd
 
-
-def add_predicted_sentiments(input_file_path, output_file_path = 'graph_formatted_data_complete.json'):
+def add_predicted_sentiments(input_file_path, output_file_path = 'graph_constructor_data_complete.json'):
     # Load the tokenizer and modelpath to the saved model.
-    # Access to model folder. Place it together with this function: https://drive.google.com/drive/folders/1kJ0NQcxPTa-QJfteeqPQ4TJUGcSkZhDT?usp=sharing
+    # Access to model folder. Place the contents of the drive file in a folder named as in model_path.
+    # Place the file under absa_handler folder
+    # https://drive.google.com/drive/folders/1kJ0NQcxPTa-QJfteeqPQ4TJUGcSkZhDT?usp=sharing
     model_path = 'sentiment_model_completed'  
     tokenizer = RobertaTokenizer.from_pretrained(model_path)
     model_eval = RobertaForSequenceClassification.from_pretrained(model_path,num_labels=2 )
@@ -41,7 +42,7 @@ def add_predicted_sentiments(input_file_path, output_file_path = 'graph_formatte
         
         # Add the sentiment to the review dictionary
         review["sentiments"] = sentiments
-        
+        review["rating"] = int(review["rating"])
         # Append the updated review to the output list
         output_reviews.append(review)
 
@@ -52,5 +53,3 @@ def add_predicted_sentiments(input_file_path, output_file_path = 'graph_formatte
     print("Sentiments added")
 
     return(output_reviews)
-
-add_predicted_sentiments('graph_formatted_data.json')
